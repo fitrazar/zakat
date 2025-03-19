@@ -19,14 +19,15 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah Data Warga</h3>
+                        <h3 class="card-title">Tambah Data Penerima Zakat</h3>
                     </div>
                     <?php if (session()->getFlashdata('error')): ?>
-                    <div class="alert alert-danger mb-3 mt-3 p-3"><?= session()->getFlashdata('error'); ?></div>
+                        <div class="alert alert-danger mb-3 mt-3 p-3"><?= session()->getFlashdata('error'); ?></div>
                     <?php endif; ?>
 
                     <div class="card-body">
-                        <form action="<?= base_url('penerima_zakat/store'); ?>" method="post">
+                        <form action="<?= base_url('penerima_zakat/store'); ?>" method="post"
+                            enctype="multipart/form-data">
                             <?= csrf_field(); ?>
 
                             <div class="row">
@@ -36,11 +37,11 @@
                                         <select id="warga_id" name="warga_id" class="form-control select2">
                                             <option value="">Pilih Warga</option>
                                             <?php foreach ($warga as $w): ?>
-                                            <option value="<?= $w['id']; ?>" data-rt="<?= $w['rt']; ?>"
-                                                data-rw="<?= $w['rw']; ?>" data-jk="<?= $w['jenis_kelamin']; ?>"
-                                                data-status="<?= $w['status']; ?>" data-alamat="<?= $w['alamat']; ?>">
-                                                <?= $w['nama']; ?>
-                                            </option>
+                                                <option value="<?= $w['id']; ?>" data-rt="<?= $w['rt']; ?>"
+                                                    data-rw="<?= $w['rw']; ?>" data-jk="<?= $w['jenis_kelamin']; ?>"
+                                                    data-status="<?= $w['status']; ?>" data-alamat="<?= $w['alamat']; ?>">
+                                                    <?= $w['nama']; ?>
+                                                </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -69,7 +70,7 @@
 
                                     <div class="form-group">
                                         <label>Jenis Zakat</label>
-                                        <select name="jenis_zakat" class="form-control">
+                                        <select name="jenis" class="form-control">
                                             <option value="uang">Uang</option>
                                             <option value="beras">Beras</option>
                                         </select>
@@ -80,21 +81,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Jumlah</label>
-                                        <input type="number" name="jumlah" class="form-control"
-                                            placeholder="Masukkan jumlah" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Satuan</label>
-                                        <select name="satuan" class="form-control">
-                                            <option value="kg">Kilogram (Kg)</option>
-                                            <option value="gram">Gram</option>
-                                            <option value="liter">Liter</option>
-                                            <option value="rupiah">Rupiah</option>
-                                        </select>
+                                        <label for="jumlah" class="form-label">Jumlah</label>
+                                        <input type="number" step="0.01" name="jumlah" id="jumlah" class="form-control"
+                                            required>
+                                        <small class="text-muted">Saldo kas: <span id="saldoKas">Mengambil
+                                                data...</span></small>
                                     </div>
                                 </div>
 
@@ -104,6 +95,13 @@
                                         <input type="date" name="tanggal_terima" class="form-control"
                                             value="<?= date('Y-m-d'); ?>" required>
                                     </div>
+                                </div>
+
+
+                                <!-- Foto -->
+                                <div class="form-group">
+                                    <label for="foto">Bukti</label>
+                                    <input type="file" class="form-control" id="foto" name="foto">
                                 </div>
                             </div>
 
@@ -119,15 +117,36 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('.select2').select2();
-    $('#warga_id').change(function() {
-        let selected = $(this).find('option:selected');
-        $('#rt_rw').val(selected.data('rt') + "/" + selected.data('rw'));
-        $('#jenis_kelamin').val(selected.data('jk'));
-        $('#status').val(selected.data('status'));
-        $('#alamat').val(selected.data('alamat'));
+    $(document).ready(function () {
+        $('.select2').select2();
+        $('#warga_id').change(function () {
+            let selected = $(this).find('option:selected');
+            $('#rt_rw').val(selected.data('rt') + "/" + selected.data('rw'));
+            $('#jenis_kelamin').val(selected.data('jk'));
+            $('#status').val(selected.data('status'));
+            $('#alamat').val(selected.data('alamat'));
+        });
     });
-});
+</script>
+<script>
+    $(document).ready(function () {
+
+        function getSaldoKas() {
+            $.ajax({
+                url: "<?= base_url('kas_zakat/saldo') ?>",
+                type: "GET",
+                dataType: "json",
+                success: function (response) {
+                    $("#saldoKas").html("Uang: " + response.uang + " | Beras: " + response.beras +
+                        " kg");
+                },
+                error: function () {
+                    $("#saldoKas").html("Gagal mengambil saldo.");
+                }
+            });
+        }
+
+        getSaldoKas();
+    });
 </script>
 <?= $this->endSection(); ?>

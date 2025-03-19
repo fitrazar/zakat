@@ -63,10 +63,10 @@
 
                         <div class="form-group">
                             <label>Jenis Zakat</label>
-                            <select name="jenis" class="form-control">
-                                <option value="uang" <?= ($penerima['jenis'] == 'uang') ? 'selected' : ''; ?>>Uang
+                            <select name="jenis_zakat" class="form-control">
+                                <option value="uang" <?= ($penerima['jenis_zakat'] == 'uang') ? 'selected' : ''; ?>>Uang
                                 </option>
-                                <option value="beras" <?= ($penerima['jenis'] == 'beras') ? 'selected' : ''; ?>>
+                                <option value="beras" <?= ($penerima['jenis_zakat'] == 'beras') ? 'selected' : ''; ?>>
                                     Beras</option>
                             </select>
                         </div>

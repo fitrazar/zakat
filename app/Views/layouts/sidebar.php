@@ -44,45 +44,46 @@
                     </a>
                 </li>
                 <?php if (is_admin()): ?>
-                <li class="nav-item">
-                    <a href="/rt" class="nav-link">
-                        <i class="nav-icon fas fa-user-check"></i>
-                        <p>
-                            Data RT
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="/rt" class="nav-link">
+                            <i class="nav-icon fas fa-user-check"></i>
+                            <p>
+                                Data RT
+                            </p>
+                        </a>
+                    </li>
                 <?php endif; ?>
 
                 <?php if (is_admin() || is_rt()): ?>
-                <li class="nav-item">
-                    <a href="/warga" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Data Warga
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="/warga" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Data Warga
+                            </p>
+                        </a>
+                    </li>
                 <?php endif; ?>
 
                 <?php if (is_admin() || is_bendahara()): ?>
-                <li class="nav-item">
-                    <a href="/penerima_zakat" class="nav-link">
-                        <i class="nav-icon fas fa-book"></i>
-                        <p>
-                            Penerima Zakat
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="/pemasukan_zakat" class="nav-link">
+                            <i class="nav-icon fas fa-weight"></i>
+                            <p>
+                                Pemasukan Zakat
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/penerima_zakat" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Penerima Zakat
+                            </p>
+                        </a>
+                    </li>
+
                 <?php endif; ?>
-                <li class="nav-item">
-                    <a href="/penyaluran_zakat" class="nav-link">
-                        <i class="nav-icon fas fa-weight"></i>
-                        <p>
-                            Penyaluran Zakat
-                        </p>
-                    </a>
-                </li>
 
 
 

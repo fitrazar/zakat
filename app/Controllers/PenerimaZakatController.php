@@ -51,28 +51,37 @@ class PenerimaZakatController extends BaseController
         if (
             !$this->validate([
                 'warga_id' => 'required|integer',
-                'jenis_zakat' => 'required|in_list[uang,beras]',
+                'jenis' => 'required|in_list[uang,beras]',
                 'jumlah' => 'required|numeric',
-                'satuan' => 'required|max_length[50]',
                 'tanggal_terima' => 'required|valid_date[Y-m-d]',
+                'foto' => 'is_image[foto]|mime_in[foto,image/jpg,image/jpeg,image/png]|max_size[foto,2048]',
             ])
         ) {
             return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
+        $file = $this->request->getFile('foto');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $fotoName = $file->getRandomName();
+            $file->move('uploads/bukti/', $fotoName);
+        } else {
+            $fotoName = 'default.png';
+        }
+
         $data = [
             'warga_id' => $this->request->getPost('warga_id'),
-            'jenis_zakat' => $this->request->getPost('jenis_zakat'),
+            'jenis' => $this->request->getPost('jenis'),
             'jumlah' => $this->request->getPost('jumlah'),
-            'satuan' => $this->request->getPost('satuan'),
             'tanggal_terima' => $this->request->getPost('tanggal_terima'),
+            'foto' => $fotoName,
         ];
-        $this->penerimaZakatModel->save($data);
 
-        // Update saldo masuk di kas_zakat
-        $this->kasZakatModel->updateSaldoMasuk($data['jenis_zakat'], $data['jumlah']);
-
-        return redirect()->to('/penerima_zakat')->with('success', 'Data Penerima Zakat berhasil ditambahkan');
+        try {
+            $this->penerimaZakatModel->tambahPenyaluran($data);
+            return redirect()->to('/penerima_zakat')->with('success', 'Data Penerima Zakat berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     public function edit($id)
@@ -100,44 +109,48 @@ class PenerimaZakatController extends BaseController
         if (
             !$this->validate([
                 'warga_id' => 'required|integer',
-                'jenis_zakat' => 'required|in_list[uang,beras]',
+                'jenis' => 'required|in_list[uang,beras]',
                 'jumlah' => 'required|numeric',
-                'satuan' => 'required|max_length[50]',
                 'tanggal_terima' => 'required|valid_date[Y-m-d]',
             ])
         ) {
             return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
+        $file = $this->request->getFile('foto');
+        $oldFoto = $this->request->getPost('old_foto');
+
+        if ($file->isValid() && !$file->hasMoved()) {
+            $fotoName = $file->getRandomName();
+            $file->move('uploads/bukti/', $fotoName);
+        } else {
+            $fotoName = $oldFoto;
+        }
+
         $newData = [
             'warga_id' => $this->request->getPost('warga_id'),
-            'jenis_zakat' => $this->request->getPost('jenis_zakat'),
+            'jenis' => $this->request->getPost('jenis'),
             'jumlah' => $this->request->getPost('jumlah'),
-            'satuan' => $this->request->getPost('satuan'),
             'tanggal_terima' => $this->request->getPost('tanggal_terima'),
+            'foto' => $fotoName,
         ];
 
-        $this->penerimaZakatModel->update($id, $newData);
-
-        // Perbarui saldo masuk: Kurangi saldo lama, tambahkan saldo baru
-        $this->kasZakatModel->updateSaldoMasuk($oldData['jenis_zakat'], -$oldData['jumlah']);
-        $this->kasZakatModel->updateSaldoMasuk($newData['jenis_zakat'], $newData['jumlah']);
-
-        return redirect()->to('/penerima_zakat')->with('success', 'Data Penerima Zakat berhasil diperbarui');
+        try {
+            $this->penerimaZakatModel->editPenyaluran($id, $newData);
+            return redirect()->to('/penerima_zakat')->with('success', 'Data Penerima Zakat berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     public function delete($id)
     {
-        $data = $this->penerimaZakatModel->find($id);
-        if (!$data) {
-            return redirect()->to('/penerima_zakat')->with('error', 'Data tidak ditemukan');
+        try {
+            $this->penerimaZakatModel->hapusPenyaluran($id);
+            return redirect()->to('/penerima_zakat')->with('success', 'Data Penerima Zakat berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->to('/penerima_zakat')->with('error', $e->getMessage());
         }
-
-        $this->penerimaZakatModel->delete($id);
-
-        $this->kasZakatModel->updateSaldoMasuk($data['jenis_zakat'], -$data['jumlah']);
-
-        return redirect()->to('/penerima_zakat')->with('success', 'Data Penerima Zakat berhasil dihapus');
     }
 
     public function cetak_pdf()

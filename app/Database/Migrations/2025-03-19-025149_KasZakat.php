@@ -15,16 +15,16 @@ class KasZakat extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'jenis' => [ // uang atau beras
+            'jenis' => [
                 'type' => 'ENUM',
-                'constraint' => ['uang', 'beras'],
+                'constraint' => ['uang', 'beras', 'infaq'],
             ],
-            'saldo_masuk' => [ // Total penerimaan zakat
+            'saldo_masuk' => [ // Total pemasukan zakat
                 'type' => 'DECIMAL',
                 'constraint' => '10,2',
                 'default' => 0.00,
             ],
-            'saldo_keluar' => [ // Total penyaluran zakat
+            'saldo_keluar' => [ // Total penerima zakat
                 'type' => 'DECIMAL',
                 'constraint' => '10,2',
                 'default' => 0.00,

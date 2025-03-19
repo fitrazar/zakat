@@ -42,16 +42,16 @@ $routes->get('penerima_zakat/cetak_pdf', 'PenerimaZakatController::cetak_pdf');
 $routes->get('penerima_zakat/cetak_pdf/(:num)?', 'PenerimaZakatController::cetak_pdf/$1');
 $routes->get('penerima_zakat/cetak_excel/(:num)?', 'PenerimaZakatController::cetak_excel/$1');
 
-// Penyaluran Zakat
-$routes->group('penyaluran_zakat', function ($routes) {
-    $routes->get('/', 'PenyaluranZakatController::index');
-    $routes->get('create', 'PenyaluranZakatController::create');
-    $routes->post('store', 'PenyaluranZakatController::store');
-    $routes->get('edit/(:num)', 'PenyaluranZakatController::edit/$1');
-    $routes->post('update/(:num)', 'PenyaluranZakatController::update/$1');
-    $routes->get('delete/(:num)', 'PenyaluranZakatController::delete/$1');
-    $routes->get('cetak_pdf', 'PenyaluranZakatController::cetak_pdf');
-    $routes->get('cetak_excel', 'PenyaluranZakatController::cetak_excel');
+// Pemasukan Zakat
+$routes->group('pemasukan_zakat', function ($routes) {
+    $routes->get('/', 'PemasukanZakatController::index');
+    $routes->get('create', 'PemasukanZakatController::create');
+    $routes->post('store', 'PemasukanZakatController::store');
+    $routes->get('edit/(:num)', 'PemasukanZakatController::edit/$1');
+    $routes->post('update/(:num)', 'PemasukanZakatController::update/$1');
+    $routes->get('delete/(:num)', 'PemasukanZakatController::delete/$1');
+    $routes->get('cetak_pdf', 'PemasukanZakatController::cetak_pdf');
+    $routes->get('cetak_excel', 'PemasukanZakatController::cetak_excel');
 });
 
 // Kas Zakat

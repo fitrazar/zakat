@@ -23,7 +23,7 @@
                     </div>
 
                     <?php if (session()->getFlashdata('error')): ?>
-                    <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+                        <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
                     <?php endif; ?>
 
                     <div class="card-body">
@@ -49,23 +49,20 @@
                                     value="<?= $warga['jumlah_keluarga']; ?>" required>
                             </div>
 
-                            <div class="form-group">
-                                <label>Umur</label>
-                                <input type="number" name="umur" class="form-control" value="<?= $warga['umur']; ?>"
-                                    required>
-                            </div>
+                            <?php if (is_admin()): ?>
+                                <div class="form-group">
+                                    <label>RT</label>
+                                    <input type="number" name="rt" class="form-control" value="<?= (int) $warga['rt']; ?>"
+                                        required>
+                                </div>
+                            <?php elseif (is_rt()): ?>
+                                <div class="form-group">
+                                    <label>RT</label>
+                                    <input type="number" name="rt" class="form-control" value="<?= (int) $warga['rt']; ?>"
+                                        readonly>
+                                </div>
+                            <?php endif; ?>
 
-                            <div class="form-group">
-                                <label>No HP</label>
-                                <input type="text" name="no_hp" class="form-control" value="<?= $warga['no_hp']; ?>"
-                                    required>
-                            </div>
-
-                            <div class="form-group">
-                                <label>RT</label>
-                                <input type="number" name="rt" class="form-control" value="<?= (int) $warga['rt']; ?>"
-                                    readonly>
-                            </div>
 
                             <div class="form-group">
                                 <label>RW</label>
@@ -78,19 +75,16 @@
                                 <select name="status" class="form-control">
                                     <option value="Mampu" <?= $warga['status'] == 'Mampu' ? 'selected' : ''; ?>>Mampu
                                     </option>
-                                    <option value="Tidak Mampu"
-                                        <?= $warga['status'] == 'Tidak Mampu' ? 'selected' : ''; ?>>Tidak Mampu</option>
+                                    <option value="Tidak Mampu" <?= $warga['status'] == 'Tidak Mampu' ? 'selected' : ''; ?>>Tidak Mampu</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control">
-                                    <option value="Laki - Laki"
-                                        <?= $warga['jenis_kelamin'] == 'Laki - Laki' ? 'selected' : ''; ?>>Laki - Laki
+                                    <option value="Laki - Laki" <?= $warga['jenis_kelamin'] == 'Laki - Laki' ? 'selected' : ''; ?>>Laki - Laki
                                     </option>
-                                    <option value="Perempuan"
-                                        <?= $warga['jenis_kelamin'] == 'Perempuan' ? 'selected' : ''; ?>>Perempuan
+                                    <option value="Perempuan" <?= $warga['jenis_kelamin'] == 'Perempuan' ? 'selected' : ''; ?>>Perempuan
                                     </option>
                                 </select>
                             </div>
@@ -117,15 +111,6 @@
                                     value="<?= $isPekerjaanLainnya ? $pekerjaanTersimpan : ''; ?>">
                             </div>
 
-                            <div class="form-group">
-                                <label>Foto</label>
-                                <input type="file" name="foto" class="form-control">
-                                <input type="hidden" name="old_foto" value="<?= $warga['foto']; ?>">
-                                <small>* Kosongkan jika tidak ingin mengganti foto</small>
-                                <br>
-                                <img src="<?= base_url('uploads/warga/' . $warga['foto']); ?>" width="100">
-                            </div>
-
                             <button type="submit" class="btn btn-success">Update</button>
                             <a href="<?= base_url('warga'); ?>" class="btn btn-secondary">Kembali</a>
                         </form>
@@ -139,19 +124,19 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    let pekerjaanSelect = document.getElementById("pekerjaan");
-    let pekerjaanLainInput = document.getElementById("pekerjaan_lain");
+    document.addEventListener("DOMContentLoaded", function () {
+        let pekerjaanSelect = document.getElementById("pekerjaan");
+        let pekerjaanLainInput = document.getElementById("pekerjaan_lain");
 
-    pekerjaanSelect.addEventListener("change", function() {
-        if (pekerjaanSelect.value === "Lainnya") {
-            pekerjaanLainInput.style.display = "block";
-        } else {
-            pekerjaanLainInput.style.display = "none";
-            pekerjaanLainInput.value = "";
-        }
+        pekerjaanSelect.addEventListener("change", function () {
+            if (pekerjaanSelect.value === "Lainnya") {
+                pekerjaanLainInput.style.display = "block";
+            } else {
+                pekerjaanLainInput.style.display = "none";
+                pekerjaanLainInput.value = "";
+            }
+        });
     });
-});
 </script>
 
 <?= $this->endSection(); ?>

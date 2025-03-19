@@ -50,18 +50,6 @@
                                         <input type="number" class="form-control" id="jumlah_keluarga"
                                             name="jumlah_keluarga" required>
                                     </div>
-
-                                    <!-- Umur -->
-                                    <div class="form-group">
-                                        <label for="umur">Umur</label>
-                                        <input type="number" class="form-control" id="umur" name="umur" required>
-                                    </div>
-
-                                    <!-- No HP -->
-                                    <div class="form-group">
-                                        <label for="no_hp">No HP</label>
-                                        <input type="text" class="form-control" id="no_hp" name="no_hp" required>
-                                    </div>
                                 </div>
 
                                 <div class="col-md-6">
@@ -134,11 +122,6 @@
                                     </div>
 
 
-                                    <!-- Foto -->
-                                    <div class="form-group">
-                                        <label for="foto">Foto</label>
-                                        <input type="file" class="form-control" id="foto" name="foto">
-                                    </div>
                                 </div>
                             </div>
 

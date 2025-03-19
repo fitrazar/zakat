@@ -12,7 +12,7 @@ class WargaModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
-    protected $allowedFields = ['nama', 'alamat', 'jumlah_keluarga', 'umur', 'foto', 'no_hp', 'rt', 'rw', 'status', 'jenis_kelamin', 'pekerjaan', 'created_at'];
+    protected $allowedFields = ['nama', 'alamat', 'jumlah_keluarga', 'rt', 'rw', 'status', 'jenis_kelamin', 'pekerjaan', 'created_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

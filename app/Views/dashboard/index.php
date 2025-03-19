@@ -31,7 +31,7 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3><?= number_format($saldo_uang_keluar, 0, ',', '.'); ?></h3>
+                        <h3>Rp <?= number_format($saldo_uang_keluar, 0, ',', '.'); ?></h3>
                         <p>Saldo Zakat Keluar</p>
                     </div>
                     <div class="icon">
@@ -59,7 +59,7 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>Rp <?= $saldo_beras_keluar; ?> KG</h3>
+                        <h3><?= $saldo_beras_keluar; ?> KG</h3>
                         <p>Saldo Zakat Beras Keluar</p>
                     </div>
                     <div class="icon">
@@ -141,33 +141,33 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+    document.addEventListener("DOMContentLoaded", function () {
+        const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-    const zakatMasuk = JSON.parse('<?= $zakat_masuk; ?>');
-    const zakatKeluar = JSON.parse('<?= $zakat_keluar; ?>');
+        const zakatMasuk = JSON.parse('<?= $zakat_masuk; ?>');
+        const zakatKeluar = JSON.parse('<?= $zakat_keluar; ?>');
 
-    const zakatBerasMasuk = JSON.parse('<?= $zakat_beras_masuk; ?>');
-    const zakatBerasKeluar = JSON.parse('<?= $zakat_beras_keluar; ?>');
+        const zakatBerasMasuk = JSON.parse('<?= $zakat_beras_masuk; ?>');
+        const zakatBerasKeluar = JSON.parse('<?= $zakat_beras_keluar; ?>');
 
-    const zakatMasukData = new Array(12).fill(0);
-    const zakatKeluarData = new Array(12).fill(0);
+        const zakatMasukData = new Array(12).fill(0);
+        const zakatKeluarData = new Array(12).fill(0);
 
-    const zakatBerasMasukData = new Array(12).fill(0);
-    const zakatBerasKeluarData = new Array(12).fill(0);
+        const zakatBerasMasukData = new Array(12).fill(0);
+        const zakatBerasKeluarData = new Array(12).fill(0);
 
-    zakatMasuk.forEach(item => zakatMasukData[item.bulan - 1] = item.total);
-    zakatKeluar.forEach(item => zakatKeluarData[item.bulan - 1] = item.total);
+        zakatMasuk.forEach(item => zakatMasukData[item.bulan - 1] = item.total);
+        zakatKeluar.forEach(item => zakatKeluarData[item.bulan - 1] = item.total);
 
-    zakatBerasMasuk.forEach(item => zakatBerasMasukData[item.bulan - 1] = item.total);
-    zakatBerasKeluar.forEach(item => zakatBerasKeluarData[item.bulan - 1] = item.total);
+        zakatBerasMasuk.forEach(item => zakatBerasMasukData[item.bulan - 1] = item.total);
+        zakatBerasKeluar.forEach(item => zakatBerasKeluarData[item.bulan - 1] = item.total);
 
-    const barChartCanvas = document.getElementById("bar-chart-canvas").getContext("2d");
-    new Chart(barChartCanvas, {
-        type: "bar",
-        data: {
-            labels: labels,
-            datasets: [{
+        const barChartCanvas = document.getElementById("bar-chart-canvas").getContext("2d");
+        new Chart(barChartCanvas, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
                     label: "Penerimaan Zakat",
                     backgroundColor: "#28a745",
                     data: zakatMasukData
@@ -187,41 +187,41 @@ document.addEventListener("DOMContentLoaded", function() {
                     backgroundColor: "#db770b",
                     data: zakatBerasKeluarData
                 },
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
 
-    const pieChartCanvas = document.getElementById("pie-chart-canvas").getContext("2d");
-    new Chart(pieChartCanvas, {
-        type: "pie",
-        data: {
-            labels: ["Penerimaan Zakat", "Penyaluran Zakat", "Penerimaan Zakat Beras",
-                "Penyaluran Zakat Beras"
-            ],
-            datasets: [{
-                data: [
-                    zakatMasukData.reduce((a, b) => a + b, 0),
-                    zakatKeluarData.reduce((a, b) => a + b, 0),
-                    zakatBerasMasukData.reduce((a, b) => a + b, 0),
-                    zakatBerasKeluarData.reduce((a, b) => a + b, 0)
+        const pieChartCanvas = document.getElementById("pie-chart-canvas").getContext("2d");
+        new Chart(pieChartCanvas, {
+            type: "pie",
+            data: {
+                labels: ["Penerimaan Zakat", "Penyaluran Zakat", "Penerimaan Zakat Beras",
+                    "Penyaluran Zakat Beras"
                 ],
-                backgroundColor: ["#28a745", "#dc3545", "#5132a8", "#db770b"]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
+                datasets: [{
+                    data: [
+                        zakatMasukData.reduce((a, b) => a + b, 0),
+                        zakatKeluarData.reduce((a, b) => a + b, 0),
+                        zakatBerasMasukData.reduce((a, b) => a + b, 0),
+                        zakatBerasKeluarData.reduce((a, b) => a + b, 0)
+                    ],
+                    backgroundColor: ["#28a745", "#dc3545", "#5132a8", "#db770b"]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
     });
-});
 </script>
 <?= $this->endSection(); ?>

@@ -20,7 +20,7 @@ class PenerimaZakat extends Migration
                 'constraint' => 11,
                 'unsigned' => true,
             ],
-            'jenis_zakat' => [
+            'jenis' => [
                 'type' => 'ENUM',
                 'constraint' => ['uang', 'beras'],
                 'default' => 'uang',
@@ -30,15 +30,10 @@ class PenerimaZakat extends Migration
                 'constraint' => '10,2',
                 'null' => false,
             ],
-            'satuan' => [
-                'type' => 'VARCHAR',
-                'constraint' => '50',
-                'null' => true,
-                'comment' => 'kg, gram, rupiah',
-            ],
             'tanggal_terima' => [
                 'type' => 'DATE',
             ],
+            'foto' => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => false],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

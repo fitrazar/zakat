@@ -6,6 +6,7 @@ use App\Models\WargaModel;
 use App\Models\KasZakatModel;
 use App\Models\PenerimaZakatModel;
 use App\Controllers\BaseController;
+use App\Models\PemasukanZakatModel;
 use App\Models\PenyaluranZakatModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -17,7 +18,7 @@ class DashboardController extends BaseController
         $kasModel = new KasZakatModel();
         $wargaModel = new WargaModel();
         $penerimaModel = new PenerimaZakatModel();
-        $penyaluranModel = new PenyaluranZakatModel();
+        $pemasukanModel = new PemasukanZakatModel();
 
         // Ambil saldo zakat masuk & keluar berdasarkan jenisnya
         $saldoUangMasuk = $kasModel->where('jenis', 'uang')->selectSum('saldo_masuk')->first();
@@ -31,26 +32,26 @@ class DashboardController extends BaseController
         $totalPenerima = $penerimaModel->countAll();
 
         // Data untuk grafik (Zakat Masuk & Keluar per bulan)
-        $zakatMasuk = $penerimaModel->select("MONTH(tanggal_terima) as bulan, SUM(jumlah) as total")
-            ->where('jenis_zakat', 'uang')
+        $zakatMasuk = $pemasukanModel->select("MONTH(tanggal_masuk) as bulan, SUM(jumlah) as total")
+            ->where('jenis', 'uang')
             ->groupBy('bulan')
             ->orderBy('bulan', 'ASC')
             ->findAll();
 
-        $zakatKeluar = $penyaluranModel->select("MONTH(tanggal) as bulan, SUM(jumlah) as total")
-            ->where('satuan', 'Rupiah')
+        $zakatKeluar = $penerimaModel->select("MONTH(tanggal_terima) as bulan, SUM(jumlah) as total")
+            ->where('jenis', 'uang')
             ->groupBy('bulan')
             ->orderBy('bulan', 'ASC')
             ->findAll();
 
-        $zakatBerasMasuk = $penerimaModel->select("MONTH(tanggal_terima) as bulan, SUM(jumlah) as total")
-            ->where('jenis_zakat', 'beras')
+        $zakatBerasMasuk = $pemasukanModel->select("MONTH(tanggal_masuk) as bulan, SUM(jumlah) as total")
+            ->where('jenis', 'beras')
             ->groupBy('bulan')
             ->orderBy('bulan', 'ASC')
             ->findAll();
 
-        $zakatBerasKeluar = $penyaluranModel->select("MONTH(tanggal) as bulan, SUM(jumlah) as total")
-            ->whereNotIn("satuan", ["Rupiah"])
+        $zakatBerasKeluar = $penerimaModel->select("MONTH(tanggal_terima) as bulan, SUM(jumlah) as total")
+            ->where("jenis", "beras")
             ->groupBy('bulan')
             ->orderBy('bulan', 'ASC')
             ->findAll();

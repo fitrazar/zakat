@@ -12,7 +12,7 @@ class PenerimaZakatModel extends Model
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
     protected $protectFields = true;
-    protected $allowedFields = ['warga_id', 'jenis_zakat', 'jumlah', 'satuan', 'tanggal_terima', 'created_at', 'updated_at'];
+    protected $allowedFields = ['warga_id', 'jenis', 'jumlah', 'tanggal_terima', 'foto', 'created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -75,6 +75,69 @@ class PenerimaZakatModel extends Model
         }
 
         return $builder->findAll();
+    }
+
+
+    /**
+     * Tambah penyaluran zakat & update saldo di KasZakatModel
+     */
+    public function tambahPenyaluran($data)
+    {
+        $kasModel = new \App\Models\KasZakatModel();
+
+        $saldo = $kasModel->getSaldoByJenis($data['jenis']);
+        if (!$saldo || $saldo['saldo_akhir'] < $data['jumlah']) {
+            throw new \Exception('Saldo tidak mencukupi untuk penyaluran zakat.');
+        }
+
+        // Insert data penyaluran tanpa mengubah satuan aslinya
+        $this->insert($data);
+
+        // Update saldo keluar
+        $kasModel->updateSaldoKeluar($data['jenis'], $data['jumlah']);
+    }
+
+
+
+    /**
+     * Edit data penyaluran zakat & sesuaikan saldo
+     */
+    public function editPenyaluran($id, $data)
+    {
+        $kasModel = new \App\Models\KasZakatModel();
+        $penerimaOld = $this->find($id);
+
+        if (!$penerimaOld) {
+            throw new \Exception('Data penerima tidak ditemukan.');
+        }
+
+        // Sesuaikan saldo keluar dengan jumlah lama
+        $kasModel->adjustSaldoKeluar($penerimaOld['jenis'], $penerimaOld['jumlah']);
+
+        // Update saldo keluar dengan jumlah baru
+        $kasModel->updateSaldoKeluar($data['jenis'], $data['jumlah']);
+
+        // Update data penyaluran tanpa mengubah satuan aslinya
+        $this->update($id, $data);
+    }
+
+    /**
+     * Hapus penyaluran zakat & kembalikan saldo
+     */
+    public function hapusPenyaluran($id)
+    {
+        $kasModel = new \App\Models\KasZakatModel();
+        $penerimaan = $this->find($id);
+
+        if (!$penerimaan) {
+            throw new \Exception('Data Penerima tidak ditemukan.');
+        }
+
+        // Kembalikan saldo keluar
+        $kasModel->adjustSaldoKeluar($penerimaan['jenis'], $penerimaan['jumlah']);
+
+        // Hapus data penyaluran
+        $this->delete($id);
     }
 
 
