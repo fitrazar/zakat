@@ -31,8 +31,8 @@
                         <a href="<?= base_url('pemasukan_zakat/cetak_pdf'); ?>" class="btn btn-danger ml-2"
                             target="_blank">Cetak PDF</a>
 
-                        <a href="<?= base_url('pemasukan_zakat/cetak_excel'); ?>" class="btn btn-success ml-2">Cetak
-                            Excel</a>
+                        <!-- <a href="<?= base_url('pemasukan_zakat/cetak_excel'); ?>" class="btn btn-success ml-2">Cetak
+                            Excel</a> -->
                     </div>
 
                     <div class="d-flex justify-content-start align-items-center p-3">
@@ -41,7 +41,7 @@
                             <select id="filter_warga" class="form-control select2">
                                 <option value="">Semua Warga</option>
                                 <?php foreach ($pemasukan_zakat as $w): ?>
-                                    <option value="<?= $w['id']; ?>"><?= $w['nama']; ?> (<?= $w['tanggal_masuk']; ?>)
+                                    <option value="<?= $w['nama']; ?>"><?= $w['nama']; ?> (<?= $w['tanggal_masuk']; ?>)
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -58,8 +58,8 @@
                         </div>
 
                         <button id="cetak_pdf_filtered" class="btn btn-danger mt-4 ml-2">Cetak PDF (Filter)</button>
-                        <button id="cetak_excel_filtered" class="btn btn-success mt-4 ml-2">Cetak Excel
-                            (Filter)</button>
+                        <!-- <button id="cetak_excel_filtered" class="btn btn-success mt-4 ml-2">Cetak Excel
+                            (Filter)</button> -->
                     </div>
 
 
@@ -130,12 +130,12 @@
         $('.select2').select2();
 
         function getFilterParams() {
-            let warga_id = $('#filter_warga').val();
+            let nama = $('#filter_warga').val();
             let tanggal_mulai = $('#filter_tanggal_mulai').val();
             let tanggal_akhir = $('#filter_tanggal_akhir').val();
             let params = [];
 
-            if (warga_id) params.push("warga_id=" + warga_id);
+            if (nama) params.push("nama=" + nama);
             if (tanggal_mulai) params.push("tanggal_mulai=" + tanggal_mulai);
             if (tanggal_akhir) params.push("tanggal_akhir=" + tanggal_akhir);
 

@@ -27,14 +27,14 @@
                     <div class="d-flex justify-content-start align-items-center p-3">
                         <a href="<?= base_url('penerima_zakat/create'); ?>" class="btn btn-primary">Tambah Penerima</a>
 
-                        <a href="<?= base_url('penerima_zakat/cetak_pdf'); ?>" class="btn btn-danger ml-2"
+                        <!-- <a href="<?= base_url('penerima_zakat/cetak_pdf'); ?>" class="btn btn-danger ml-2"
                             target="_blank">Cetak PDF</a>
 
                         <a href="<?= base_url('penerima_zakat/cetak_excel'); ?>" class="btn btn-success ml-2">Cetak
-                            Excel</a>
+                            Excel</a> -->
                     </div>
 
-                    <div class="d-flex justify-content-start align-items-center p-3">
+                    <!-- <div class="d-flex justify-content-start align-items-center p-3">
                         <div class="form-group mt-3">
                             <label for="filter_warga">Pilih Warga untuk Dicetak</label>
                             <select id="filter_warga" class="form-control select2">
@@ -58,7 +58,7 @@
                         <button id="cetak_pdf_filtered" class="btn btn-danger mt-4 ml-2">Cetak PDF (Filter)</button>
                         <button id="cetak_excel_filtered" class="btn btn-success mt-4 ml-2">Cetak Excel
                             (Filter)</button>
-                    </div>
+                    </div> -->
 
 
                     <div class="card-body">

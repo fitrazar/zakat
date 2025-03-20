@@ -1,68 +1,166 @@
+// app/Views/zakat_pdf.php
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Penerima Zakat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bukti Pembayaran Zakat</title>
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
 
-    .title {
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
+        .container {
+            width: 100%;
+            padding: 20px;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
+        .header {
+            text-align: center;
+        }
 
-    th,
-    td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
+        .header h2,
+        .header h3 {
+            margin: 0;
+        }
 
-    th {
-        background-color: #f2f2f2;
-    }
+        .line {
+            border-bottom: 1px solid black;
+            margin: 10px 0;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .table {
+            width: 100%;
+        }
+
+        .table td {
+            padding: 5px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .signature {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
     </style>
 </head>
 
 <body>
+    <?php foreach ($pemasukan_zakat as $p): ?>
+        <div class="container">
+            <div class="header">
+                <img src="logo.png" width="50" style="float:left;">
+                <h2>PANITIA ZAKAT/INFAQ/SHADAQOH TAHUN <?= date('Y'); ?></h2>
+                <h3>Masjid</h3>
+            </div>
+            <div class="line"></div>
+            <table class="table">
+                <?php
+                $id = $p['id'];
+                $id_formatted = str_pad($id, 2, '0', STR_PAD_LEFT);
+                $tanggal = date('d/m/Y');
+                $nomor = "$id_formatted/$tanggal";
+                ?>
+                <tr>
+                    <td></td>
+                    <td>Nomor: <?= $nomor; ?></td>
+                </tr>
+                <tr>
+                    <td>Nama Keluarga : <?= $p['nama']; ?></td>
+                    <td></td>
+                </tr>
+            </table>
+            <h4><strong>Untuk Pembayaran</strong></h4>
+            <table class="table">
+                <td>Zakat Fitrah</td>
+                <td>: Rp
+                    <?= $p['jenis_zakat'] == 'Zakat Fitrah' && $p['jenis'] == 'uang' ? number_format($p['jumlah'], 0, ',', '.') : '-'; ?>
+                </td>
+                <td>Zakat Beras</td>
+                <td>: <?= $p['jenis_zakat'] == 'Zakat Fitrah' && $p['jenis'] == 'beras' ? $p['jumlah'] : '-'; ?> Ltr
+                </td>
+                </tr>
+                <tr>
+                    <td>Zakat Mal</td>
+                    <td>: Rp
+                        <?= $p['jenis_zakat'] == 'Zakat Maal' && $p['jenis'] == 'uang' ? number_format($p['jumlah'], 0, ',', '.') : '-'; ?>
+                    </td>
+                    <td>Sadaqoh/Infaq</td>
+                    <td>: Rp <?= $p['infaq'] ? number_format($p['infaq'], 0, ',', '.') : '-'; ?></td>
+                </tr>
+                <!-- <tr>
+                <td>Fidyah</td>
+                <td>: Rp 3</td>
+            </tr> -->
+            </table>
+            <p>Dari sejumlah <?= $p['jumlah_keluarga']; ?> jiwa</p>
+            <div class="footer">
+                <table width="100%">
+                    <tr>
+                        <?php
+                        setlocale(LC_TIME, 'id_ID.utf8');
+                        $date = date('d');
+                        $bulan = [
+                            'Januari',
+                            'Februari',
+                            'Maret',
+                            'April',
+                            'Mei',
+                            'Juni',
+                            'Juli',
+                            'Agustus',
+                            'September',
+                            'Oktober',
+                            'November',
+                            'Desember'
+                        ];
+                        $bulan_sekarang = $bulan[date('n') - 1];
+                        $tahun = date('Y');
+                        $tanggal_indonesia = "$date $bulan_sekarang $tahun";
+                        ?>
 
-    <div class="title">Laporan Penerima Zakat</div>
+                    <tr>
+                        <td align="left" colspan="2" style="margin-bottom: 20px;">Purwakarta, <?= $tanggal_indonesia ?></td>
+                        <td></td>
+                    </tr>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Nama Warga</th>
-                <th>Jenis Zakat</th>
-                <th>Jumlah</th>
-                <th>Satuan</th>
-                <th>Tanggal Terima</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($penerima_zakat as $p): ?>
-            <tr>
-                <td><?= $p['nama']; ?></td>
-                <td><?= ucfirst($p['jenis_zakat']); ?></td>
-                <td><?= $p['jumlah']; ?></td>
-                <td><?= $p['satuan']; ?></td>
-                <td><?= date('d-m-Y', strtotime($p['tanggal_terima'])); ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+                    </tr>
+                    <tr>
+                        <td align="center">Yang Menerima,</td>
+                        <td></td>
+                        <td align="center">Yang Menyerahkan,</td>
+                    </tr>
+                    <tr>
+                        <td height="50"></td>
+                        <td></td>
+                        <td height="50"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">(_________________)</td>
+                        <td></td>
+                        <td align="center">(_________________)</td>
+                    </tr>
+                </table>
+            </div>
 
+        </div>
+        <div class="page-break"></div>
+    <?php endforeach; ?>
 </body>
 
 </html>

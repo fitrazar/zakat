@@ -147,34 +147,45 @@ class PemasukanZakatController extends BaseController
         return redirect()->to('/pemasukan_zakat')->with('success', 'Data Pemasukan Zakat berhasil dihapus');
     }
 
-    // public function cetak_pdf()
-    // {
-    //     $warga_id = $this->request->getGet('warga_id');
-    //     $tanggal_mulai = $this->request->getGet('tanggal_mulai');
-    //     $tanggal_akhir = $this->request->getGet('tanggal_akhir');
+    public function cetak_pdf()
+    {
+        $nama = $this->request->getGet('nama');
+        $tanggal_mulai = $this->request->getGet('tanggal_mulai');
+        $tanggal_akhir = $this->request->getGet('tanggal_akhir');
 
-    //     $data['pemasukan_zakat'] = $this->pemasukanZakatModel->getPenerimaZakatFiltered($warga_id, $tanggal_mulai, $tanggal_akhir);
+        $zakatModel = new PemasukanZakatModel();
+        $query = $zakatModel->select('*');
 
-    //     $options = new Options();
-    //     $options->set('defaultFont', 'Arial');
-    //     $dompdf = new Dompdf($options);
+        if (!empty($nama)) {
+            $query->like('nama', $nama);
+        }
+        if (!empty($tanggal_mulai) && !empty($tanggal_akhir)) {
+            $query->where('tanggal_masuk >=', $tanggal_mulai)
+                ->where('tanggal_masuk <=', $tanggal_akhir);
+        }
 
-    //     $html = view('pemasukan_zakat/pdf', $data);
-    //     $dompdf->loadHtml($html);
-    //     $dompdf->setPaper('A4', 'portrait');
-    //     $dompdf->render();
+        $data['pemasukan_zakat'] = $query->findAll();
 
-    //     $nama_file = 'pemasukan_zakat';
-    //     if ($warga_id) {
-    //         $nama_warga = isset($data['pemasukan_zakat'][0]) ? $data['pemasukan_zakat'][0]['nama'] : "Tidak_Ditemukan";
-    //         $nama_file .= "_" . str_replace(' ', '_', strtolower($nama_warga));
-    //     }
-    //     if ($tanggal_mulai && $tanggal_akhir) {
-    //         $nama_file .= "_" . date('d-m-Y', strtotime($tanggal_mulai)) . "_sampai_" . date('d-m-Y', strtotime($tanggal_akhir));
-    //     }
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($options);
 
-    //     $dompdf->stream("$nama_file.pdf", array("Attachment" => false));
-    // }
+        $html = view('pemasukan_zakat/pdf', $data);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $nama_file = 'Bukti Pembayaran Zakat';
+        if ($nama) {
+            $nama_warga = isset($data['pemasukan_zakat'][0]) ? $data['pemasukan_zakat'][0]['nama'] : "Tidak_Ditemukan";
+            $nama_file .= " " . $nama_warga;
+        }
+        if ($tanggal_mulai && $tanggal_akhir) {
+            $nama_file .= " " . date('d-m-Y', strtotime($tanggal_mulai)) . " sampai " . date('d-m-Y', strtotime($tanggal_akhir));
+        }
+
+        $dompdf->stream("$nama_file.pdf", array("Attachment" => false));
+    }
 
 
 

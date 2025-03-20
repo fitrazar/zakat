@@ -43,4 +43,6 @@ class PemasukanZakatModel extends Model
     protected $afterFind = [];
     protected $beforeDelete = [];
     protected $afterDelete = [];
+
+
 }
