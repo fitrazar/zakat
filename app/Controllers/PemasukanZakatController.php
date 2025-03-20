@@ -132,13 +132,15 @@ class PemasukanZakatController extends BaseController
         $this->kasZakatModel->updateSaldoMasuk($oldData['jenis'], -$oldData['jumlah']);
         $this->kasZakatModel->updateSaldoMasuk($newData['jenis'], $newData['jumlah']);
 
+
+         if ($oldData['infaq'] > 0) {
+            $this->kasZakatModel->updateSaldoMasuk($oldData['jenis'], -$oldData['infaq']);
+        }
         if ($newData['infaq'] > 0) {
             $this->kasZakatModel->updateSaldoMasuk($newData['jenis'], $newData['infaq']);
         }
 
-        if ($oldData['infaq'] > 0) {
-            $this->kasZakatModel->updateSaldoMasuk($oldData['jenis'], -$oldData['infaq']);
-        }
+       
 
         return redirect()->to('/pemasukan_zakat')->with('success', 'Data Pemasukan Zakat berhasil diperbarui');
     }
