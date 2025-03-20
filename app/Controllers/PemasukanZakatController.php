@@ -72,6 +72,9 @@ class PemasukanZakatController extends BaseController
 
         // Update saldo masuk di kas_zakat
         $this->kasZakatModel->updateSaldoMasuk($data['jenis'], $data['jumlah']);
+        if ($data['infaq'] > 0) {
+            $this->kasZakatModel->updateSaldoMasuk($data['jenis'], $data['infaq']);
+        }
 
         return redirect()->to('/pemasukan_zakat')->with('success', 'Data Pemasukan Zakat berhasil ditambahkan');
     }
@@ -128,6 +131,14 @@ class PemasukanZakatController extends BaseController
         // Perbarui saldo masuk: Kurangi saldo lama, tambahkan saldo baru
         $this->kasZakatModel->updateSaldoMasuk($oldData['jenis'], -$oldData['jumlah']);
         $this->kasZakatModel->updateSaldoMasuk($newData['jenis'], $newData['jumlah']);
+
+        if ($newData['infaq'] > 0) {
+            $this->kasZakatModel->updateSaldoMasuk($newData['jenis'], $newData['infaq']);
+        }
+
+        if ($oldData['infaq'] > 0) {
+            $this->kasZakatModel->updateSaldoMasuk($oldData['jenis'], -$oldData['infaq']);
+        }
 
         return redirect()->to('/pemasukan_zakat')->with('success', 'Data Pemasukan Zakat berhasil diperbarui');
     }

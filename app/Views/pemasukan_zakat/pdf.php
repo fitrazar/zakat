@@ -64,7 +64,14 @@
     <?php foreach ($pemasukan_zakat as $p): ?>
         <div class="container">
             <div class="header">
-                <img src="logo.png" width="50" style="float:left;">
+                <?php
+                $path = FCPATH . 'logo.jpg';
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                ?>
+                <img src="<?= $base64; ?>" width="50" style="float:left;">
+
                 <h2>PANITIA ZAKAT/INFAQ/SHADAQOH TAHUN <?= date('Y'); ?></h2>
                 <h3>Masjid</h3>
             </div>
@@ -99,7 +106,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Zakat Mal</td>
+                    <td>Zakat Maal</td>
                     <td>: Rp
                         <?= $p['jenis_zakat'] == 'Zakat Maal' && $p['jenis'] == 'uang' ? number_format($p['jumlah'], 0, ',', '.') : '-'; ?>
                     </td>
