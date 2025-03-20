@@ -73,8 +73,10 @@
                 <?php
                 $id = $p['id'];
                 $id_formatted = str_pad($id, 2, '0', STR_PAD_LEFT);
-                $tanggal = date('d/m/Y');
-                $nomor = "$id_formatted/$tanggal";
+                // $tanggal = date('d/m/Y');
+                $tanggal = $p['tanggal_masuk'];
+                $tanggal_parts = explode('-', $tanggal);
+                $nomor = "{$id_formatted}/{$tanggal_parts[2]}/{$tanggal_parts[1]}/{$tanggal_parts[0]}";
                 ?>
                 <tr>
                     <td></td>
@@ -87,13 +89,14 @@
             </table>
             <h4><strong>Untuk Pembayaran</strong></h4>
             <table class="table">
-                <td>Zakat Fitrah</td>
-                <td>: Rp
-                    <?= $p['jenis_zakat'] == 'Zakat Fitrah' && $p['jenis'] == 'uang' ? number_format($p['jumlah'], 0, ',', '.') : '-'; ?>
-                </td>
-                <td>Zakat Beras</td>
-                <td>: <?= $p['jenis_zakat'] == 'Zakat Fitrah' && $p['jenis'] == 'beras' ? $p['jumlah'] : '-'; ?> Ltr
-                </td>
+                <tr>
+                    <td>Zakat Fitrah</td>
+                    <td>: Rp
+                        <?= $p['jenis_zakat'] == 'Zakat Fitrah' && $p['jenis'] == 'uang' ? number_format($p['jumlah'], 0, ',', '.') : '-'; ?>
+                    </td>
+                    <td>Zakat Beras</td>
+                    <td>: <?= $p['jenis_zakat'] == 'Zakat Fitrah' && $p['jenis'] == 'beras' ? $p['jumlah'] : '-'; ?> Ltr
+                    </td>
                 </tr>
                 <tr>
                     <td>Zakat Mal</td>

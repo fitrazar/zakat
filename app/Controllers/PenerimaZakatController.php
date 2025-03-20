@@ -170,13 +170,13 @@ class PenerimaZakatController extends BaseController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        $nama_file = 'Penerima_Zakat';
+        $nama_file = 'Penerima Zakat';
         if ($warga_id) {
             $nama_warga = isset($data['penerima_zakat'][0]) ? $data['penerima_zakat'][0]['nama'] : "Tidak_Ditemukan";
-            $nama_file .= "_" . str_replace(' ', '_', strtolower($nama_warga));
+            $nama_file .= " " . $nama_warga;
         }
         if ($tanggal_mulai && $tanggal_akhir) {
-            $nama_file .= "_" . date('d-m-Y', strtotime($tanggal_mulai)) . "_sampai_" . date('d-m-Y', strtotime($tanggal_akhir));
+            $nama_file .= " " . date('d-m-Y', strtotime($tanggal_mulai)) . " sampai " . date('d-m-Y', strtotime($tanggal_akhir));
         }
 
         $dompdf->stream("$nama_file.pdf", array("Attachment" => false));
