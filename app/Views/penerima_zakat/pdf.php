@@ -64,7 +64,13 @@
     <?php foreach ($penerima_zakat as $p): ?>
         <div class="container">
             <div class="header">
-                <img src="logo.png" width="50" style="float:left;">
+                <?php
+                $path = FCPATH . 'logo.jpg';
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                ?>
+                <img src="<?= $base64; ?>" width="50" style="float:left;">
                 <h2>NOTA PENERIMAAN ZAKAT <?= date('Y'); ?></h2>
                 <h3>Masjid</h3>
             </div>

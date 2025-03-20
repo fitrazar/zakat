@@ -79,7 +79,8 @@
                                     <tr>
                                         <td><?= $p['nama']; ?></td>
                                         <td><?= ucfirst($p['jenis_zakat']); ?></td>
-                                        <td><?= $p['jumlah']; ?></td>
+                                        <td><?= $p['jenis'] == 'uang' ? 'Rp ' . number_format($p['jumlah'], 0, ',', '.') : $p['jumlah'] . ' ltr'; ?>
+                                        </td>
                                         <td><?= date('d-m-Y', strtotime($p['tanggal_masuk'])); ?></td>
                                         <td>
                                             <a href="<?= base_url('pemasukan_zakat/edit/' . $p['id']); ?>"
@@ -105,7 +106,8 @@
                                                     <p><strong>Jumlah Keluarga:</strong> <?= $p['jumlah_keluarga']; ?></p>
                                                     <p><strong>Jenis Zakat:</strong> <?= ucfirst($p['jenis_zakat']); ?></p>
                                                     <p><strong>Jenis:</strong> <?= ucfirst($p['jenis']); ?></p>
-                                                    <p><strong>Jumlah:</strong> <?= $p['jumlah']; ?>
+                                                    <p><strong>Jumlah:</strong>
+                                                        <?= $p['jenis'] == 'uang' ? 'Rp ' . number_format($p['jumlah'], 0, ',', '.') : $p['jumlah'] . ' ltr'; ?>
                                                     </p>
                                                     <p><strong>Tanggal Masuk:</strong>
                                                         <?= date('d-m-Y', strtotime($p['tanggal_masuk'])); ?></p>

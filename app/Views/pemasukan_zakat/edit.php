@@ -5,7 +5,7 @@
     <h2>Edit Pemasukan Zakat</h2>
 
     <?php if (session()->getFlashdata('error')): ?>
-    <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+        <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
     <?php endif; ?>
 
     <div class="card">
@@ -33,7 +33,7 @@
 
                         <div class="form-group">
                             <label for="infaq" class="form-label">Infaq</label>
-                            <input type="number" step="0.01" name="infaq" id="infaq" class="form-control"
+                            <input type="text" name="infaq" id="infaq" class="form-control"
                                 value="<?= $pemasukan['infaq']; ?>">
                             <small class="text-muted">Tidak wajib</small>
                         </div>
@@ -44,11 +44,9 @@
                         <div class="form-group">
                             <label>Jenis Zakat</label>
                             <select name="jenis_zakat" class="form-control">
-                                <option value="Zakat Fitrah"
-                                    <?= ($pemasukan['jenis_zakat'] == 'Zakat Fitrah') ? 'selected' : ''; ?>>Zakat Fitrah
+                                <option value="Zakat Fitrah" <?= ($pemasukan['jenis_zakat'] == 'Zakat Fitrah') ? 'selected' : ''; ?>>Zakat Fitrah
                                 </option>
-                                <option value="Zakat Maal"
-                                    <?= ($pemasukan['jenis_zakat'] == 'Zakat Maal') ? 'selected' : ''; ?>>Zakat Maal
+                                <option value="Zakat Maal" <?= ($pemasukan['jenis_zakat'] == 'Zakat Maal') ? 'selected' : ''; ?>>Zakat Maal
                                 </option>
                             </select>
                         </div>
@@ -69,7 +67,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="jumlah" class="form-label">Jumlah</label>
-                            <input type="number" step="0.01" name="jumlah" id="jumlah" class="form-control"
+                            <input type="text" name="jumlah" id="jumlah" class="form-control"
                                 value="<?= $pemasukan['jumlah']; ?>" required>
                         </div>
                     </div>
@@ -91,36 +89,51 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.8.1"></script>
 <script>
-$(document).ready(function() {
-    $('.select2').select2();
-
-    $('#warga_id').change(function() {
-        let selected = $(this).find('option:selected');
-        $('#rt_rw').val(selected.data('rt') + "/" + selected.data('rw'));
-        $('#jenis_kelamin').val(selected.data('jk'));
-        $('#status').val(selected.data('status'));
-        $('#alamat').val(selected.data('alamat'));
+    new AutoNumeric('#jumlah', {
+        digitGroupSeparator: '.',
+        decimalCharacter: ',',
+        decimalPlaces: 2,
+        unformatOnSubmit: true
     });
-});
+    new AutoNumeric('#infaq', {
+        digitGroupSeparator: '.',
+        decimalCharacter: ',',
+        decimalPlaces: 2,
+        unformatOnSubmit: true
+    });
 </script>
 <script>
-$(document).ready(function() {
-    function getSaldoKas() {
-        $.ajax({
-            url: "<?= base_url('kas_zakat/saldo') ?>",
-            type: "GET",
-            dataType: "json",
-            success: function(response) {
-                $("#saldoKas").html("Uang: " + response.uang + " | Beras: " + response.beras +
-                    " kg");
-            },
-            error: function() {
-                $("#saldoKas").html("Gagal mengambil saldo.");
-            }
+    $(document).ready(function () {
+        $('.select2').select2();
+
+        $('#warga_id').change(function () {
+            let selected = $(this).find('option:selected');
+            $('#rt_rw').val(selected.data('rt') + "/" + selected.data('rw'));
+            $('#jenis_kelamin').val(selected.data('jk'));
+            $('#status').val(selected.data('status'));
+            $('#alamat').val(selected.data('alamat'));
         });
-    }
-    getSaldoKas();
-});
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        function getSaldoKas() {
+            $.ajax({
+                url: "<?= base_url('kas_zakat/saldo') ?>",
+                type: "GET",
+                dataType: "json",
+                success: function (response) {
+                    $("#saldoKas").html("Uang: " + response.uang + " | Beras: " + response.beras +
+                        " kg");
+                },
+                error: function () {
+                    $("#saldoKas").html("Gagal mengambil saldo.");
+                }
+            });
+        }
+        getSaldoKas();
+    });
 </script>
 <?= $this->endSection(); ?>

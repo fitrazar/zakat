@@ -50,7 +50,7 @@
 
                                     <div class="form-group">
                                         <label for="infaq" class="form-label">Infaq</label>
-                                        <input type="number" step="0.01" name="infaq" id="infaq" class="form-control">
+                                        <input type="text" name="infaq" id="infaq" class="form-control">
                                         <small class="text-muted">Tidak wajib</small>
                                     </div>
                                 </div>
@@ -79,8 +79,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="jumlah" class="form-label">Jumlah</label>
-                                        <input type="number" step="0.01" name="jumlah" id="jumlah" class="form-control"
-                                            required>
+                                        <input type="text" name="jumlah" id="jumlah" class="form-control" required>
                                     </div>
                                 </div>
 
@@ -103,4 +102,21 @@
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.8.1"></script>
+<script>
+    new AutoNumeric('#jumlah', {
+        digitGroupSeparator: '.',
+        decimalCharacter: ',',
+        decimalPlaces: 2,
+        unformatOnSubmit: true
+    });
+    new AutoNumeric('#infaq', {
+        digitGroupSeparator: '.',
+        decimalCharacter: ',',
+        decimalPlaces: 2,
+        unformatOnSubmit: true
+    });
+</script>
+
 <?= $this->endSection(); ?>

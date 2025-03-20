@@ -78,7 +78,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="jumlah" class="form-label">Jumlah</label>
-                            <input type="number" step="0.01" name="jumlah" id="jumlah" class="form-control"
+                            <input type="text" name="jumlah" id="jumlah" class="form-control"
                                 value="<?= $penerima['jumlah'] ?>" required>
                             <small class="text-muted">Saldo kas: <span id="saldoKas">Mengambil
                                     data...</span></small>
@@ -112,6 +112,15 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.8.1"></script>
+<script>
+    new AutoNumeric('#jumlah', {
+        digitGroupSeparator: '.',
+        decimalCharacter: ',',
+        decimalPlaces: 2,
+        unformatOnSubmit: true
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('.select2').select2();
