@@ -10,7 +10,7 @@ $routes->get('/login', 'AuthController::login');
 $routes->post('/login/process', 'AuthController::processLogin');
 $routes->get('/logout', 'AuthController::logout');
 $routes->get('/forgot-password', 'AuthController::forgotPassword');
-$routes->post('/forgot-password', 'AuthController::processForgotPassword');
+$routes->post('/forgot-password', 'AuthController::processResetPassword');
 $routes->get('/', 'DashboardController::index', ['filter' => 'auth']);
 
 
@@ -48,7 +48,7 @@ $routes->group('pemasukan_zakat', function ($routes) {
     $routes->get('create', 'PemasukanZakatController::create');
     $routes->post('store', 'PemasukanZakatController::store');
     $routes->get('edit/(:num)', 'PemasukanZakatController::edit/$1');
-    $routes->post('update/(:num)', 'PemasukanZakatController::update/$1');
+    $routes->put('update/(:num)', 'PemasukanZakatController::update/$1');
     $routes->get('delete/(:num)', 'PemasukanZakatController::delete/$1');
     $routes->get('cetak_pdf', 'PemasukanZakatController::cetak_pdf');
     $routes->get('cetak_excel', 'PemasukanZakatController::cetak_excel');

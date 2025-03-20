@@ -46,7 +46,7 @@ class AuthController extends BaseController
 
     public function forgotPassword()
     {
-        $data['title'] = 'Forgot Password';
+        $data['title'] = 'Ganti Password';
         return view('auth/forgot_password', $data);
     }
 

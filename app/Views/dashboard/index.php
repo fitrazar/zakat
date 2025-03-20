@@ -41,6 +41,20 @@
                 </div>
             </div>
 
+            <!-- Saldo Zakat Akhir -->
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>Rp <?= number_format($saldo_uang_akhir, 0, ',', '.'); ?></h3>
+                        <p>Saldo Zakat Akhir</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
             <!-- Saldo Zakat Masuk -->
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
@@ -61,6 +75,20 @@
                     <div class="inner">
                         <h3><?= $saldo_beras_keluar; ?> KG</h3>
                         <p>Saldo Zakat Beras Keluar</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-hand-holding"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Detail <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Saldo Zakat Akhir -->
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3><?= $saldo_beras_akhir; ?> KG</h3>
+                        <p>Saldo Zakat Beras Akhir</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-hand-holding"></i>

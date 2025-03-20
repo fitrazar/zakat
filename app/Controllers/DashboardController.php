@@ -23,9 +23,11 @@ class DashboardController extends BaseController
         // Ambil saldo zakat masuk & keluar berdasarkan jenisnya
         $saldoUangMasuk = $kasModel->where('jenis', 'uang')->selectSum('saldo_masuk')->first();
         $saldoUangKeluar = $kasModel->where('jenis', 'uang')->selectSum('saldo_keluar')->first();
+        $saldoUangAkhir = $kasModel->where('jenis', 'uang')->selectSum('saldo_akhir')->first();
 
         $saldoBerasMasuk = $kasModel->where('jenis', 'beras')->selectSum('saldo_masuk')->first();
         $saldoBerasKeluar = $kasModel->where('jenis', 'beras')->selectSum('saldo_keluar')->first();
+        $saldoBerasAkhir = $kasModel->where('jenis', 'beras')->selectSum('saldo_akhir')->first();
 
         // Total warga dan penerima zakat
         $totalWarga = $wargaModel->countAll();
@@ -59,8 +61,10 @@ class DashboardController extends BaseController
         $data = [
             'saldo_uang_masuk' => $saldoUangMasuk['saldo_masuk'] ?? 0,
             'saldo_uang_keluar' => $saldoUangKeluar['saldo_keluar'] ?? 0,
+            'saldo_uang_akhir' => $saldoUangAkhir['saldo_akhir'] ?? 0,
             'saldo_beras_masuk' => $saldoBerasMasuk['saldo_masuk'] ?? 0,
             'saldo_beras_keluar' => $saldoBerasKeluar['saldo_keluar'] ?? 0,
+            'saldo_beras_akhir' => $saldoBerasKeluar['saldo_akhir'] ?? 0,
             'total_warga' => $totalWarga,
             'total_penerima' => $totalPenerima,
             'zakat_masuk' => json_encode($zakatMasuk),

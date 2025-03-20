@@ -116,9 +116,10 @@ class PemasukanZakatController extends BaseController
         $newData = [
             'nama' => $this->request->getPost('nama'),
             'jumlah_keluarga' => $this->request->getPost('jumlah_keluarga'),
+            'jenis' => $this->request->getPost('jenis'),
             'jenis_zakat' => $this->request->getPost('jenis_zakat'),
+            'infaq' => $this->request->getPost('infaq'),
             'jumlah' => $this->request->getPost('jumlah'),
-            'satuan' => $this->request->getPost('satuan'),
             'tanggal_masuk' => $this->request->getPost('tanggal_masuk'),
         ];
 
