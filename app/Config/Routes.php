@@ -43,14 +43,14 @@ $routes->get('penerima_zakat/cetak_pdf/(:num)?', 'PenerimaZakatController::cetak
 $routes->get('penerima_zakat/cetak_excel/(:num)?', 'PenerimaZakatController::cetak_excel/$1', ['filter' => 'auth']);
 
 // Pemasukan Zakat
-    $routes->get('/pemasukan_zakat', 'PemasukanZakatController::index', ['filter' => 'auth']);
-    $routes->get('/pemasukan_zakat/create', 'PemasukanZakatController::create', ['filter' => 'auth']);
-    $routes->post('/pemasukan_zakat/store', 'PemasukanZakatController::store', ['filter' => 'auth']);
-    $routes->get('/pemasukan_zakat/edit/(:num)', 'PemasukanZakatController::edit/$1', ['filter' => 'auth']);
-    $routes->put('/pemasukan_zakat/update/(:num)', 'PemasukanZakatController::update/$1', ['filter' => 'auth']);
-    $routes->get('/pemasukan_zakat/delete/(:num)', 'PemasukanZakatController::delete/$1', ['filter' => 'auth']);
-    $routes->get('pemasukan_zakat/cetak_pdf', 'PemasukanZakatController::cetak_pdf', ['filter' => 'auth']);
-    $routes->get('/pemasukan_zakat/cetak_excel', 'PemasukanZakatController::cetak_excel', ['filter' => 'auth']);
+$routes->get('/pemasukan_zakat', 'PemasukanZakatController::index', ['filter' => 'auth']);
+$routes->get('/pemasukan_zakat/create', 'PemasukanZakatController::create', ['filter' => 'auth']);
+$routes->post('/pemasukan_zakat/store', 'PemasukanZakatController::store', ['filter' => 'auth']);
+$routes->get('/pemasukan_zakat/edit/(:num)', 'PemasukanZakatController::edit/$1', ['filter' => 'auth']);
+$routes->put('/pemasukan_zakat/update/(:num)', 'PemasukanZakatController::update/$1', ['filter' => 'auth']);
+$routes->get('/pemasukan_zakat/delete/(:num)', 'PemasukanZakatController::delete/$1', ['filter' => 'auth']);
+$routes->get('/pemasukan_zakat/cetak_pdf', 'PemasukanZakatController::cetak_pdf', ['filter' => 'auth']);
+$routes->get('/pemasukan_zakat/cetak_excel', 'PemasukanZakatController::cetak_excel', ['filter' => 'auth']);
 
 // Kas Zakat
 $routes->get('kas_zakat/saldo', 'KasZakatController::getSaldo', ['filter' => 'auth']);
