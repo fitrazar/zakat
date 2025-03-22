@@ -51,8 +51,7 @@ class PenerimaZakatController extends BaseController
         if (
             !$this->validate([
                 'warga_id' => 'required|integer',
-                'jenis' => 'required|in_list[uang,beras]',
-                'jumlah' => 'required|numeric',
+                'jenis' => 'required',
                 'tanggal_terima' => 'required|valid_date[Y-m-d]',
                 'foto' => 'is_image[foto]|mime_in[foto,image/jpg,image/jpeg,image/png]|max_size[foto,2048]',
             ])
@@ -70,11 +69,21 @@ class PenerimaZakatController extends BaseController
 
         $data = [
             'warga_id' => $this->request->getPost('warga_id'),
-            'jenis' => $this->request->getPost('jenis'),
-            'jumlah' => $this->request->getPost('jumlah'),
             'tanggal_terima' => $this->request->getPost('tanggal_terima'),
             'foto' => $fotoName,
         ];
+
+        if (in_array('uang', $this->request->getPost('jenis'))) {
+            $data['jumlah_uang'] = $this->request->getPost('jumlah_uang');
+        } else {
+            $data['jumlah_uang'] = null;
+        }
+
+        if (in_array('beras', $this->request->getPost('jenis'))) {
+            $data['jumlah_beras'] = $this->request->getPost('jumlah_beras');
+        } else {
+            $data['jumlah_beras'] = null;
+        }
 
         try {
             $this->penerimaZakatModel->tambahPenyaluran($data);
@@ -83,6 +92,8 @@ class PenerimaZakatController extends BaseController
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
     }
+
+
 
     public function edit($id)
     {

@@ -142,8 +142,7 @@
                 type: "GET",
                 dataType: "json",
                 success: function (response) {
-                    $("#saldoKas").html("Uang: " + response.uang + " | Beras: " + response.beras +
-                        " kg");
+                    $("#saldoKas").html("Uang: " + response.uang + " | Beras: " + response.beras);
                 },
                 error: function () {
                     $("#saldoKas").html("Gagal mengambil saldo.");

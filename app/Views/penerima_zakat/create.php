@@ -69,21 +69,30 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Jenis Zakat</label>
-                                        <select name="jenis" class="form-control">
-                                            <option value="uang">Uang</option>
-                                            <option value="beras">Beras</option>
-                                        </select>
+                                        <label>Jenis Zakat</label><br>
+                                        <input type="checkbox" name="jenis[]" id="jenis_uang" value="uang"> Uang
+                                        <input type="checkbox" name="jenis[]" id="jenis_beras" value="beras"> Beras
                                     </div>
+
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-4" id="input_uang" style="display: none;">
                                     <div class="form-group">
-                                        <label for="jumlah" class="form-label">Jumlah</label>
-                                        <input type="text" name="jumlah" id="jumlah" class="form-control" required>
-                                        <small class="text-muted">Saldo kas: <span id="saldoKas">Mengambil
+                                        <label for="jumlah_uang">Jumlah Uang</label>
+                                        <input type="text" name="jumlah_uang" id="jumlah_uang" class="form-control">
+                                        <small class="text-muted">Saldo kas: <span id="saldoUang">Mengambil
+                                                data...</span></small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" id="input_beras" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="jumlah_beras">Jumlah Beras (kg)</label>
+                                        <input type="number" name="jumlah_beras" id="jumlah_beras" class="form-control"
+                                            min="0" step="0.1">
+                                        <small class="text-muted">Saldo kas: <span id="saldoBeras">Mengambil
                                                 data...</span></small>
                                     </div>
                                 </div>
@@ -117,11 +126,50 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.8.1"></script>
 <script>
-    new AutoNumeric('#jumlah', {
-        digitGroupSeparator: '.',
-        decimalCharacter: ',',
-        decimalPlaces: 2,
-        unformatOnSubmit: true
+    $(document).ready(function () {
+
+        $("#jenis_uang").change(function () {
+            if (this.checked) {
+                $("#input_uang").show();
+            } else {
+                $("#input_uang").hide();
+                $("#jumlah_uang").val("");
+            }
+        });
+
+        $("#jenis_beras").change(function () {
+            if (this.checked) {
+                $("#input_beras").show();
+            } else {
+                $("#input_beras").hide();
+                $("#jumlah_beras").val("");
+            }
+        });
+
+        new AutoNumeric('#jumlah_uang', {
+            digitGroupSeparator: '.',
+            decimalCharacter: ',',
+            decimalPlaces: 2,
+            unformatOnSubmit: true
+        });
+
+        function getSaldoKas() {
+            $.ajax({
+                url: "<?= base_url('kas_zakat/saldo') ?>",
+                type: "GET",
+                dataType: "json",
+                success: function (response) {
+                    $("#saldoUang").html(response.uang);
+                    $("#saldoBeras").html(response.beras);
+                },
+                error: function () {
+                    $("#saldoUang").html("Gagal mengambil saldo.");
+                    $("#saldoBeras").html("Gagal mengambil saldo.");
+                }
+            });
+        }
+
+        getSaldoKas();
     });
 </script>
 <script>
@@ -136,25 +184,5 @@
         });
     });
 </script>
-<script>
-    $(document).ready(function () {
 
-        function getSaldoKas() {
-            $.ajax({
-                url: "<?= base_url('kas_zakat/saldo') ?>",
-                type: "GET",
-                dataType: "json",
-                success: function (response) {
-                    $("#saldoKas").html("Uang: " + response.uang + " | Beras: " + response.beras +
-                        " kg");
-                },
-                error: function () {
-                    $("#saldoKas").html("Gagal mengambil saldo.");
-                }
-            });
-        }
-
-        getSaldoKas();
-    });
-</script>
 <?= $this->endSection(); ?>

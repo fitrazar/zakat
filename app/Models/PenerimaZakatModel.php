@@ -85,17 +85,52 @@ class PenerimaZakatModel extends Model
     {
         $kasModel = new \App\Models\KasZakatModel();
 
-        $saldo = $kasModel->getSaldoByJenis($data['jenis']);
-        if (!$saldo || $saldo['saldo_akhir'] < $data['jumlah']) {
-            throw new \Exception('Saldo tidak mencukupi untuk penyaluran zakat.');
+        // Pastikan minimal ada salah satu jenis zakat yang diberikan
+        if (empty($data['jumlah_uang']) && empty($data['jumlah_beras'])) {
+            throw new \Exception('Harap masukkan jumlah zakat yang akan disalurkan.');
         }
 
-        // Insert data penyaluran tanpa mengubah satuan aslinya
-        $this->insert($data);
+        // Jika ada zakat uang, proses saldo dan insert transaksi
+        if (!empty($data['jumlah_uang'])) {
+            $saldoUang = $kasModel->getSaldoByJenis('uang');
+            if (!$saldoUang || $saldoUang['saldo_akhir'] < $data['jumlah_uang']) {
+                throw new \Exception('Saldo uang tidak mencukupi untuk penyaluran zakat.');
+            }
 
-        // Update saldo keluar
-        $kasModel->updateSaldoKeluar($data['jenis'], $data['jumlah']);
+            // Simpan transaksi untuk zakat uang
+            $this->insert([
+                'warga_id' => $data['warga_id'],
+                'jenis' => 'uang',
+                'jumlah' => $data['jumlah_uang'],
+                'tanggal_terima' => $data['tanggal_terima'],
+                'foto' => $data['foto']
+            ]);
+
+            // Kurangi saldo kas uang
+            $kasModel->updateSaldoKeluar('uang', $data['jumlah_uang']);
+        }
+
+        // Jika ada zakat beras, proses saldo dan insert transaksi
+        if (!empty($data['jumlah_beras'])) {
+            $saldoBeras = $kasModel->getSaldoByJenis('beras');
+            if (!$saldoBeras || $saldoBeras['saldo_akhir'] < $data['jumlah_beras']) {
+                throw new \Exception('Saldo beras tidak mencukupi untuk penyaluran zakat.');
+            }
+
+            // Simpan transaksi untuk zakat beras
+            $this->insert([
+                'warga_id' => $data['warga_id'],
+                'jenis' => 'beras',
+                'jumlah' => $data['jumlah_beras'],
+                'tanggal_terima' => $data['tanggal_terima'],
+                'foto' => $data['foto']
+            ]);
+
+            // Kurangi saldo kas beras
+            $kasModel->updateSaldoKeluar('beras', $data['jumlah_beras']);
+        }
     }
+
 
 
 

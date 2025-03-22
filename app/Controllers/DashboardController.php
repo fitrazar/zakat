@@ -64,7 +64,7 @@ class DashboardController extends BaseController
             'saldo_uang_akhir' => $saldoUangAkhir['saldo_akhir'] ?? 0,
             'saldo_beras_masuk' => $saldoBerasMasuk['saldo_masuk'] ?? 0,
             'saldo_beras_keluar' => $saldoBerasKeluar['saldo_keluar'] ?? 0,
-            'saldo_beras_akhir' => $saldoBerasKeluar['saldo_akhir'] ?? 0,
+            'saldo_beras_akhir' => $saldoBerasAkhir['saldo_akhir'] ?? 0,
             'total_warga' => $totalWarga,
             'total_penerima' => $totalPenerima,
             'zakat_masuk' => json_encode($zakatMasuk),

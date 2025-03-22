@@ -139,6 +139,8 @@ class KasZakatModel extends Model
                 'saldo_akhir' => $newSaldoAkhir,
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
+        } else {
+            throw new \Exception('Saldo tidak mencukupi untuk penyaluran zakat.');
         }
     }
 }

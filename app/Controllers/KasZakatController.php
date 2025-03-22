@@ -17,7 +17,7 @@ class KasZakatController extends BaseController
 
         return $this->response->setJSON([
             'uang' => number_format($saldoUang, 2, ',', '.'),
-            'beras' => number_format($saldoBeras, 2, ',', '.') . ' kg'
+            'beras' => number_format($saldoBeras, 2, ',', '.') . ' ltr'
         ]);
     }
 
