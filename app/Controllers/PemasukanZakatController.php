@@ -72,8 +72,11 @@ class PemasukanZakatController extends BaseController
 
         // Update saldo masuk di kas_zakat
         $this->kasZakatModel->updateSaldoMasuk($data['jenis'], $data['jumlah']);
-        if ($data['infaq'] > 0) {
+        if ($data['infaq'] > 0 && $data['jenis'] == 'uang') {
             $this->kasZakatModel->updateSaldoMasuk($data['jenis'], $data['infaq']);
+        }
+        if ($data['infaq'] > 0 && $data['jenis'] == 'beras') {
+            $this->kasZakatModel->updateSaldoMasuk('uang', $data['infaq']);
         }
 
         return redirect()->to('/pemasukan_zakat')->with('success', 'Data Pemasukan Zakat berhasil ditambahkan');
@@ -133,11 +136,18 @@ class PemasukanZakatController extends BaseController
         $this->kasZakatModel->updateSaldoMasuk($newData['jenis'], $newData['jumlah']);
 
 
-        if ($oldData['infaq'] > 0) {
+        if ($oldData['infaq'] > 0 && $oldData['jenis'] == 'uang') {
             $this->kasZakatModel->updateSaldoMasuk($oldData['jenis'], -$oldData['infaq']);
         }
-        if ($newData['infaq'] > 0) {
+        if ($oldData['infaq'] > 0 && $oldData['jenis'] == 'beras') {
+            $this->kasZakatModel->updateSaldoMasuk('uang', -$oldData['infaq']);
+        }
+
+        if ($newData['infaq'] > 0 && $newData['jenis'] == 'uang') {
             $this->kasZakatModel->updateSaldoMasuk($newData['jenis'], $newData['infaq']);
+        }
+        if ($newData['infaq'] > 0 && $newData['jenis'] == 'beras') {
+            $this->kasZakatModel->updateSaldoMasuk('uang', $newData['infaq']);
         }
 
 
@@ -156,9 +166,16 @@ class PemasukanZakatController extends BaseController
 
         // Kurangi saldo masuk di kas_zakat
         $this->kasZakatModel->updateSaldoMasuk($data['jenis'], -$data['jumlah']);
-        if ($data['infaq'] > 0) {
+
+        if ($data['infaq'] > 0 && $data['jenis'] == 'uang') {
             $this->kasZakatModel->updateSaldoMasuk($data['jenis'], -$data['infaq']);
         }
+        if ($data['infaq'] > 0 && $data['jenis'] == 'beras') {
+            $this->kasZakatModel->updateSaldoMasuk('uang', -$data['infaq']);
+        }
+        // if ($data['infaq'] > 0) {
+        //     $this->kasZakatModel->updateSaldoMasuk($data['jenis'], -$data['infaq']);
+        // }
 
         return redirect()->to('/pemasukan_zakat')->with('success', 'Data Pemasukan Zakat berhasil dihapus');
     }
