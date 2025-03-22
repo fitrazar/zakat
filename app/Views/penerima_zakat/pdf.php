@@ -1,4 +1,3 @@
-// app/Views/zakat_pdf.php
 <!DOCTYPE html>
 <html lang="id">
 
@@ -31,10 +30,6 @@
             margin: 10px 0;
         }
 
-        .content {
-            margin-top: 20px;
-        }
-
         .table {
             width: 100%;
         }
@@ -61,7 +56,35 @@
 </head>
 
 <body>
-    <?php foreach ($penerima_zakat as $p): ?>
+    <?php
+    // Gabungkan data berdasarkan nama dan tanggal terima
+    $mergedData = [];
+    foreach ($penerima_zakat as $p) {
+        $key = $p['nama'] . '-' . $p['tanggal_terima'];
+
+        if (!isset($mergedData[$key])) {
+            $mergedData[$key] = [
+                'nama' => $p['nama'],
+                'rt' => $p['rt'],
+                'rw' => $p['rw'],
+                'alamat' => $p['alamat'],
+                'status' => $p['status'],
+                'tanggal_terima' => $p['tanggal_terima'],
+                'jumlah_uang' => ($p['jenis'] == 'uang') ? $p['jumlah'] : 0,
+                'jumlah_beras' => ($p['jenis'] == 'beras') ? $p['jumlah'] : 0
+            ];
+        } else {
+            // Jika nama dan tanggal sudah ada, update jumlah uang atau jumlah beras
+            if ($p['jenis'] == 'uang') {
+                $mergedData[$key]['jumlah_uang'] = $p['jumlah'];
+            } elseif ($p['jenis'] == 'beras') {
+                $mergedData[$key]['jumlah_beras'] = $p['jumlah'];
+            }
+        }
+    }
+    ?>
+
+    <?php foreach ($mergedData as $p): ?>
         <div class="container">
             <div class="header">
                 <?php
@@ -75,14 +98,12 @@
                 <h3>Masjid</h3>
             </div>
             <div class="line"></div>
+
             <table class="table">
                 <?php
-                $id = $p['id'];
-                $id_formatted = str_pad($id, 2, '0', STR_PAD_LEFT);
-                // $tanggal = date('d/m/Y');
                 $tanggal = $p['tanggal_terima'];
                 $tanggal_parts = explode('-', $tanggal);
-                $nomor = "{$id_formatted}/{$tanggal_parts[2]}/{$tanggal_parts[1]}/{$tanggal_parts[0]}";
+                $nomor = "{$tanggal_parts[2]}/{$tanggal_parts[1]}/{$tanggal_parts[0]}";
                 ?>
                 <tr>
                     <td></td>
@@ -93,7 +114,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Alamat : <?= $p['rt']; ?>/<?= $p['rw']; ?>     <?= $p['alamat']; ?></td>
+                    <td>Alamat : <?= $p['rt']; ?>/<?= $p['rw']; ?> - <?= $p['alamat']; ?></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -101,28 +122,24 @@
                     <td></td>
                 </tr>
             </table>
+
             <h4><strong>Detail Penerimaan</strong></h4>
             <table class="table">
                 <tr>
-                    <td>Jumlah Uang : Rp
-                        <?= $p['jenis'] == 'uang' ? number_format($p['jumlah'], 0, ',', '.') : '-'; ?>
+                    <td>Jumlah Uang : Rp <?= $p['jumlah_uang'] > 0 ? number_format($p['jumlah_uang'], 0, ',', '.') : '-'; ?>
                     </td>
-                    <td>
-                    </td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>Jumlah Beras : <?= $p['jenis'] == 'beras' ? $p['jumlah'] : '-'; ?> Ltr</td>
-                    <td>
-                    </td>
+                    <td>Jumlah Beras : <?= $p['jumlah_beras'] > 0 ? $p['jumlah_beras'] : '-'; ?> Ltr</td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>Tanggal Diterima :
-                        <?= $p['tanggal_terima']; ?>
-                    </td>
-                    <td>
-                    </td>
+                    <td>Tanggal Diterima : <?= $p['tanggal_terima']; ?></td>
+                    <td></td>
                 </tr>
             </table>
+
             <div class="footer">
                 <table width="100%">
                     <tr>
@@ -171,7 +188,6 @@
                     </tr>
                 </table>
             </div>
-
         </div>
         <div class="page-break"></div>
     <?php endforeach; ?>
