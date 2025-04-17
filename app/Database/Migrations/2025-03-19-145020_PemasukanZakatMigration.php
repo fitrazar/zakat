@@ -16,8 +16,7 @@ class PemasukanZakatMigration extends Migration
                 'auto_increment' => true,
             ],
             'nama' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+                'type' => 'TEXT',
                 'null' => false,
             ],
             'jumlah_keluarga' => ['type' => 'INT', 'constraint' => 11],
@@ -33,12 +32,12 @@ class PemasukanZakatMigration extends Migration
             ],
             'jumlah' => [
                 'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'constraint' => '20,2',
                 'null' => false,
             ],
             'infaq' => [
                 'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'constraint' => '20,2',
                 'null' => true,
             ],
             'tanggal_masuk' => [

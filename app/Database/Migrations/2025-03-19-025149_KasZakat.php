@@ -21,17 +21,17 @@ class KasZakat extends Migration
             ],
             'saldo_masuk' => [ // Total pemasukan zakat
                 'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'constraint' => '20,2',
                 'default' => 0.00,
             ],
             'saldo_keluar' => [ // Total penerima zakat
                 'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'constraint' => '20,2',
                 'default' => 0.00,
             ],
             'saldo_akhir' => [ // Saldo saat ini (saldo_masuk - saldo_keluar)
                 'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'constraint' => '20,2',
                 'default' => 0.00,
             ],
             'updated_at' => [

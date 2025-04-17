@@ -27,7 +27,7 @@ class PenerimaZakat extends Migration
             ],
             'jumlah' => [
                 'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'constraint' => '20,2',
                 'null' => false,
             ],
             'tanggal_terima' => [

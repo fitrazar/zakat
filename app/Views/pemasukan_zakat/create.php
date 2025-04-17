@@ -39,8 +39,9 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Nama lengkap</label>
-                                        <input type="text" id="nama" name="nama" class="form-control" required>
+                                        <label>Nama</label>
+                                        <textarea id="nama" name="nama" class="form-control" required></textarea>
+                                        <small class="text-muted">Pisahkan dengan koma</small>
                                     </div>
                                     <div class="form-group">
                                         <label>Jumlah Keluarga</label>
